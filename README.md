@@ -4,7 +4,10 @@ An article-first film awards analysis project with reusable Python tools and a
 static Quarto website. This repository currently provides the project foundation,
 not an ingestion pipeline or a trained forecasting model.
 
-The intended public website is <https://juliakm.github.io/awards-patterns/>.
+The configured public website is <https://juliakm.com/awards-patterns/>.
+GitHub Pages inherits the account's existing `juliakm.com` domain; the
+`juliakm.github.io/awards-patterns/` address redirects there. This project's HTTPS
+setting is enabled, without changing the account's other sites.
 Deployment is **not live or verified** merely because this URL is documented.
 
 ## Local setup
@@ -78,3 +81,24 @@ additional data redistribution rights.
 Project code is licensed under the [MIT License](LICENSE). Third-party source
 material is not covered by this license; follow the source registry's separate
 permission decisions before acquisition or publication.
+
+## Offline checks and deployment
+
+The Actions workflows restore the locked environment, run tests and Ruff, and
+render only the approved, nonexecuting homepage. Only the guarded `_site/`
+artifact is uploaded to GitHub Pages; acquisition and training are never part
+of publishing.
+
+```bash
+uv run --locked python scripts/validate_publication.py --check-inputs
+quarto render index.qmd --no-execute
+uv run --locked python scripts/validate_publication.py
+```
+
+The publication guard rejects unapproved pages, downloads, symlinks, private
+files, and case-insensitive `oscar` paths. Adding an article or changing Quarto
+assets requires reviewing and updating the publication allowlist.
+
+The source audit is complete, but primary dataset acquisition remains blocked
+on provenance/permission review. Its notebook reads committed metadata offline;
+no actual source dataset or trained model is included.

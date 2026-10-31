@@ -358,6 +358,8 @@ Full competitive-category coverage is a launch goal, not something to claim if t
 
 Use the project Pages URL `https://juliakm.github.io/awards-patterns/`. A project Pages path comes from the repository name, so rename the existing `oscar-patterns` GitHub repository to `awards-patterns` before Pages is enabled.
 
+**Deployment discovery:** GitHub Pages inherits the account's existing `juliakm.com` user-site domain. The canonical project URL is therefore `https://juliakm.com/awards-patterns/`; the `github.io` URL redirects there. Configure Quarto and the publication guard for that canonical URL. HTTPS is enabled for this project using the existing approved certificate; no other site's domain configuration was changed.
+
 No part of the live site's path may contain "oscar" or "oscars" in any letter case. This covers the repository name, page and article slugs, notebook paths, downloads, and other published assets. It does not restrict the internal Python package name, local folder name, or Oscar references in page text.
 
 The source repository is public, so the project does not depend on GitHub Pro for Pages. Publishing the code lets readers inspect the pipeline, tests, and data model, and gives forecasts a public commit history. Run expensive modeling locally and keep deployment small.
@@ -429,7 +431,7 @@ Each ID matches its session todo. Check off tasks here and update their session 
 
 **Initially ready to start independently:** `foundation-bootstrap`, `data-source-audit`, `model-cutoff-policy`, `repo-auditing-public-history`, and `site-minimal-root-quarto`.
 
-Repository renaming, public visibility, and Pages setup are authorized future work, subject to the public-history audit. Adding this backlog does not perform those changes.
+Repository renaming, public visibility, and Pages setup were authorized subject to the public-history audit. The repository is now public at `juliakm/awards-patterns`; Pages deployment remains unchecked until its workflow and actual public URL are verified.
 
 **Execution checkpoint, October 31:** Python 3.12.16, uv 0.13.6, and Quarto 1.10.20 are installed and tested locally. The initial Python suite passes 16 tests; the minimal homepage renders. The source audit is complete but has not cleared a primary/fallback bulk-data permission path. Acquisition and the independently verified category registry are blocked on source permissions/access; no actual Oscar dataset, fitted model, or empirical results are claimed. See `data/source_audit.json` for evidence and next steps. Code/site infrastructure can proceed without publishing source records.
 
@@ -541,7 +543,7 @@ Repository renaming, public visibility, and Pages setup are authorized future wo
 
   **Acceptance:** all refs to be exposed are clean; unresolved assets remain excluded/private. Unused source-license questions do not block a clean minimal site. This audit does not itself change visibility or hosting. **Depends on:** none.
 
-- [ ] **`repo-renaming-public-licensing` — Renaming and licensing the public repository**
+- [x] **`repo-renaming-public-licensing` — Renaming and licensing the public repository**
 
   Following audit acceptance, rename to `juliakm/awards-patterns`, update the local remote and documentation, add the selected code license and separate-data-terms notice, and change visibility to public. Review newly introduced files again before exposure.
 
@@ -553,7 +555,7 @@ Repository renaming, public visibility, and Pages setup are authorized future wo
 
   **Acceptance:** root Home renders offline to `_site/index.html`; only intended material is included; every published path, including assets/downloads/notebooks, excludes case-insensitive "oscar". **Depends on:** none.
 
-- [ ] **`release-offline-pages-workflows` — Building offline checks and Pages artifact workflows**
+- [x] **`release-offline-pages-workflows` — Building offline checks and Pages artifact workflows**
 
   Implement locked/pinned checks and Pages workflows with focused tests, Ruff, public-data validation, offline rendering, reviewed output freshness, and least-needed deployment permissions. Upload only `_site/`, never the checkout; keep acquisition/training out of CI publishing.
 

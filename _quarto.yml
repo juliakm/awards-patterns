@@ -11,7 +11,7 @@ execute:
 
 website:
   title: "Awards Patterns"
-  site-url: https://juliakm.github.io/awards-patterns/
+  site-url: https://juliakm.com/awards-patterns/
   description: "An article-first project exploring award patterns with transparent evidence and reproducible methods."
   search: false
   navbar:
