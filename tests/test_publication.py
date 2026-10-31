@@ -59,6 +59,28 @@ def test_homepage_artifact_reports_only_approved_files(site):
     )
 
 
+@pytest.mark.parametrize("stylesheet", publication.APPROVED_BOOTSTRAP_STYLESHEETS)
+def test_reviewed_platform_stylesheet_and_link_are_accepted(site, stylesheet):
+    original = next(
+        name
+        for name in publication.APPROVED_FILES
+        if name in publication.APPROVED_BOOTSTRAP_STYLESHEETS
+    )
+    (site / original).rename(site / stylesheet)
+    (site / "index.html").write_text(
+        f'<html><link rel="stylesheet" href="{stylesheet}"></html>', encoding="utf-8"
+    )
+    inventory = publication.validate_site(site)
+    assert stylesheet in {entry["path"] for entry in inventory}
+
+
+def test_multiple_reviewed_stylesheets_are_rejected(site):
+    for stylesheet in publication.APPROVED_BOOTSTRAP_STYLESHEETS:
+        (site / stylesheet).write_text("", encoding="utf-8")
+    with pytest.raises(ValueError, match="exactly one reviewed Bootstrap"):
+        publication.validate_site(site)
+
+
 @pytest.mark.parametrize(
     "name",
     [
@@ -73,6 +95,7 @@ def test_homepage_artifact_reports_only_approved_files(site):
         "notebooks/review.ipynb",
         "unselected.html",
         "site_libs/quarto-html/unreviewed.js",
+        "site_libs/bootstrap/bootstrap-00000000000000000000000000000000.min.css",
     ],
 )
 def test_unapproved_artifacts_fail_closed(site, name):

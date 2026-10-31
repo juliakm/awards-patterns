@@ -48,6 +48,13 @@ APPROVED_FILES = frozenset(
         "site_libs/quarto-nav/quarto-nav.js",
     }
 )
+# Quarto's Cosmo fingerprint differs in the verified macOS and Linux builds.
+APPROVED_BOOTSTRAP_STYLESHEETS = frozenset(
+    {
+        "site_libs/bootstrap/bootstrap-445b8638c3d06994fee0907d791121c4.min.css",
+        "site_libs/bootstrap/bootstrap-a14d652b86e00f03abd5043129e363d4.min.css",
+    }
+)
 APPROVED_DIRECTORIES = {
     str(parent)
     for name in APPROVED_FILES
@@ -84,7 +91,7 @@ def approved_url(value: str, *, external_link: bool = False) -> None:
         return
     if "oscar" in path.casefold() or ".." in PurePosixPath(path).parts:
         raise ValueError(f"Forbidden resource path: {path}")
-    if path not in APPROVED_FILES:
+    if path not in APPROVED_FILES and path not in APPROVED_BOOTSTRAP_STYLESHEETS:
         raise ValueError(f"Unapproved resource reference: {path}")
 
 
@@ -143,7 +150,9 @@ def validate_site(site: Path) -> list[dict]:
             if name not in APPROVED_DIRECTORIES:
                 raise ValueError(f"Unapproved publication directory: {name}")
             continue
-        if not stat.S_ISREG(mode) or name not in APPROVED_FILES:
+        if not stat.S_ISREG(mode) or (
+            name not in APPROVED_FILES and name not in APPROVED_BOOTSTRAP_STYLESHEETS
+        ):
             raise ValueError(f"Unapproved publication file: {name}")
         if path.stat().st_nlink != 1:
             raise ValueError(f"Hard-linked file is not publishable: {name}")
@@ -158,11 +167,13 @@ def validate_site(site: Path) -> list[dict]:
                 "sha256": hashlib.sha256(payload).hexdigest(),
             }
         )
-    missing = APPROVED_FILES - found
+    missing = (APPROVED_FILES - APPROVED_BOOTSTRAP_STYLESHEETS) - found
     if missing:
         raise ValueError(
             f"Missing approved publication files: {', '.join(sorted(missing))}"
         )
+    if len(found & APPROVED_BOOTSTRAP_STYLESHEETS) != 1:
+        raise ValueError("Expected exactly one reviewed Bootstrap stylesheet")
     HomepageParser().feed((site / "index.html").read_text(encoding="utf-8"))
     search = json.loads((site / "search.json").read_text(encoding="utf-8"))
     if not isinstance(search, list):
