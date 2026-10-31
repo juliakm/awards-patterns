@@ -1,0 +1,30 @@
+project:
+  type: website
+  output-dir: _site
+  # Add approved articles and individual notebooks explicitly; never use globs.
+  render:
+    - index.qmd
+  resources: []
+
+execute:
+  freeze: auto
+
+website:
+  title: "Awards Patterns"
+  site-url: https://juliakm.github.io/awards-patterns/
+  description: "An article-first project exploring award patterns with transparent evidence and reproducible methods."
+  search: false
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+  page-footer:
+    left: "An independent research project. Not affiliated with the Academy."
+
+format:
+  html:
+    lang: en
+    theme: cosmo
+    toc: false
+    anchor-sections: true
+    smooth-scroll: false

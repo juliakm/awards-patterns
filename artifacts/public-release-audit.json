@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-31",
+  "repository_before_publication": "juliakm/oscar-patterns",
+  "initial_visibility": "PRIVATE",
+  "result": "initial_history_accepted",
+  "reviewed_commits": [
+    "dab380e2de7198e1ed5620092023baba08fb0a91",
+    "7576ee7",
+    "540fe6e"
+  ],
+  "local_refs": [
+    "refs/heads/main",
+    "refs/heads/update-project-plan",
+    "refs/remotes/origin/main"
+  ],
+  "remote_branches": ["main"],
+  "remote_tags": [],
+  "unique_tracked_file_versions": 4,
+  "historical_file_inventory": [
+    ".gitignore",
+    "plans/oscar-analytics-project-plan.md"
+  ],
+  "reviewed_content": "Project planning text and ignore rules; no historical raw data, notebooks, models, images, or third-party chart extracts.",
+  "unexpected_path_flags": 0,
+  "credential_pattern_flags": 0,
+  "limitations": [
+    "Credential-pattern checks are a supporting check, not a guarantee that arbitrary sensitive material can be detected.",
+    "Implementation files introduced after this inventory must be reviewed before committing, pushing, or changing repository visibility.",
+    "Ignore rules do not remove files that are already tracked."
+  ],
+  "publication_gate": "Recheck the current tracked/staged inventory and all newly introduced assets before making the repository public."
+}

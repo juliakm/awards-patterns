@@ -73,10 +73,14 @@ The following reflects checks made October 31, 2026. A documentation page being 
 | [Wikidata](https://www.wikidata.org/wiki/Wikidata:Licensing) | Candidate for CC0 structured identifiers and supplementary facts | Verify actual award completeness and temporal meaning; do not substitute incomplete community records for Academy verification |
 | Wikipedia award and ceremony pages | Added after the October 31 research; not yet checked. Candidate source for precursor nominees, winners, and event dates, and for an automated cross-check of Oscar records | Check table consistency, dates, and attribution/share-alike terms; treat as a candidate to verify against primary references |
 | Kaggle precursor datasets | Added after the October 31 research; availability and contents not yet checked. Possible bulk starting point for Golden Globe, SAG, or other precursor records | Confirm the datasets exist, then check coverage, version pinning, license, and whether result dates are included |
+| [Steve Hedden's knowledge-graph article](https://pub.towardsai.net/using-a-knowledge-graph-to-build-a-predictive-model-for-the-oscars-8203bc11d906) and [fckg repository](https://github.com/SteveHedden/fckg) | Article dated March 3, 2026 links an ontology, instance data, pipelines, and models; useful candidate for identifiers, nomination/recipient relationships, and cross-award category concepts. GitHub metadata reports CC0-1.0; no graph data has been acquired | Pin and inspect the repository's actual data coverage and license/provenance chain. Its core Oscar data comes from DLu/oscar_data, so existing upstream questions remain; dynamic TMDB/OMDb enrichment is not evidence of historical as-of availability |
+| [Additional archived source supplied during implementation](https://archive.is/OxvZf#selection-4491.0-4494.0) | Uninspected candidate: the first request returned HTTP 429. Original publisher, article identity, selected passage, and archive capture time remain unknown | Inspect only when access is available; establish original source, capture/publication dates, relevance, and reuse terms. An archived page is not itself permission to extract or republish data |
 
 **Primary recommendation:** begin with a licensed, versioned Oscar CSV, validate against Academy records, and store it locally. Use APIs to enrich that snapshot rather than making the project depend on a live third-party awards API.
 
 **Box-office recommendation:** start with TMDB for descriptive analysis. Historical pre-cutoff grosses need a separate permitted source with dated observations. Defer paid data until a small sample demonstrates that it would materially improve the project. Do not assume Box Office Mojo permits scraping or bulk republication.
+
+**Knowledge-graph candidate:** investigate whether permitted `fckg` records can feed the existing relational tables and identity crosswalks. Borrow its explicit nomination grain, award-concept mappings, and forecast provenance without requiring an RDF database or expanding the launch architecture. Preserve this project's multi-winner exceptions and temporal safeguards; do not import current revenue, ratings, or popularity into historical forecasts without as-of evidence.
 
 ### First source-audit deliverable
 
@@ -409,9 +413,172 @@ Implementation references:
 - [Quarto overview](https://quarto.org/) and [GitHub Pages publishing](https://quarto.org/docs/publishing/github-pages.html).
 - [GitHub: creating a Pages site](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site).
 - [TMDB API FAQ and attribution](https://developer.themoviedb.org/docs/faq).
+- [Knowledge-graph Oscar modeling article](https://pub.towardsai.net/using-a-knowledge-graph-to-build-a-predictive-model-for-the-oscars-8203bc11d906) and [linked ontology/data repository](https://github.com/SteveHedden/fckg).
 - [Academy 99th Oscars key dates](https://www.oscars.org/99th-oscars-and-academy-key-dates).
 - [Academy announcement: Casting begins at the 98th Oscars](https://www.oscars.org/news/academy-establishes-award-casting-beginning-98th-oscarsr).
 
 Decide during execution, not before starting: final project title, exact dataset version, confirmed source licenses, historical prediction timestamp availability, minimum evidence for category-specific models, and whether a paid historical revenue source is worth its cost.
 
 **First executable milestone:** establish the public code repository, publish a minimal Quarto page, and complete a small source-audit notebook before attempting full-scale scraping or model development.
+
+## 13. Executable todo backlog
+
+This is the repository copy of the 24 implementation todos created in the session task database. All started as **pending** on October 31, 2026; the checkboxes below record verified completion. The three completed fleet-decomposition tasks are planning work, not completed implementation, and are omitted here.
+
+Each ID matches its session todo. Check off tasks here and update their session status as work completes. Dependencies are actual prerequisites, not ordering implied by this list. Independent tasks can run in parallel; coordinate shared files such as README, package configuration, and workflows.
+
+**Initially ready to start independently:** `foundation-bootstrap`, `data-source-audit`, `model-cutoff-policy`, `repo-auditing-public-history`, and `site-minimal-root-quarto`.
+
+Repository renaming, public visibility, and Pages setup are authorized future work, subject to the public-history audit. Adding this backlog does not perform those changes.
+
+**Execution checkpoint, October 31:** Python 3.12.16, uv 0.13.6, and Quarto 1.10.20 are installed and tested locally. The initial Python suite passes 16 tests; the minimal homepage renders. The source audit is complete but has not cleared a primary/fallback bulk-data permission path. Acquisition and the independently verified category registry are blocked on source permissions/access; no actual Oscar dataset, fitted model, or empirical results are claimed. See `data/source_audit.json` for evidence and next steps. Code/site infrastructure can proceed without publishing source records.
+
+### Python foundation and data
+
+- [x] **`foundation-bootstrap` — Bootstrapping the reproducible Python foundation**
+
+  Create the importable `src/oscar_patterns/` package, `oscar-data` console interface, `pyproject.toml`, `uv.lock`, tested Python/Quarto pins, README, and appropriate ignore rules. Preserve existing work; keep raw/curated data, secrets, models, and generated site output excluded. Code-license selection belongs to `repo-renaming-public-licensing`.
+
+  **Acceptance:** locked environment restores; imports, console help, focused tests, Ruff, and `quarto check` pass; representative private paths are ignored. **Depends on:** none.
+
+- [x] **`data-source-audit` — Auditing source permissions and acquisition viability**
+
+  Create `data/source_registry.csv` and `notebooks/00_source_audit.ipynb` with inspected source evidence, versions, coverage, year conventions, timestamp certainty, acquisition/publication permissions, attribution, and restrictions. Recheck the Oscar candidates, Academy verification workflow, Awards Daily year-label/protest-pick issues, and feasible DGA/PGA/SAG sources. Treat Wikipedia and Kaggle precursor candidates as unverified until inspected.
+
+  **Acceptance:** select a permitted primary/fallback Oscar source or explicitly record gaps/blockers; do not present old plan observations as new research. Optional pundit/revenue/other-award sources do not block the core pipeline. **Depends on:** none.
+
+- [ ] **`data-category-rule-registry` — Defining independent ceremony and category rules**
+
+  Create independently verified ceremony/category/rule registries for competitive 2010–2026 contests, including eligibility windows, nomination and final-voting dates or explicit unknowns, original labels, category transitions, field-size rules, and documented ties. Suggested outputs are `data/reference/` tables and `notebooks/01_category_history.ipynb`, subject to publication permissions.
+
+  **Acceptance:** unique expected contests and provenance; checked 2010/2011/2021/2026 examples; correct Sound, Best Picture, Casting, and exceptional-window handling without guessed dates. **Depends on:** `data-source-audit`.
+
+- [ ] **`data-pinned-acquisition` — Acquiring permitted immutable Oscar snapshots**
+
+  Implement reusable ingestion and `oscar-data ingest --source oscar-csv`. Store permitted immutable snapshots privately, record source/version/retrieval time/SHA-256 in the registry, and document permission-compatible backup and restore. Retain earlier acting/directing records when available for career history.
+
+  **Acceptance:** checksummed restores reproduce inputs; snapshots cannot be silently overwritten; unavailable/unlicensed inputs fail clearly; actual 2010–2026 completeness is inspected and gaps disclosed. No restricted data or credentials are staged. **Depends on:** `data-source-audit`, `foundation-bootstrap`.
+
+- [ ] **`data-normalized-ballots` — Normalizing ballot entities and reviewed identity crosswalks**
+
+  Implement `normalize.py`, curated Parquet entity/bridge tables, reviewed aliases/external-ID crosswalks, and an unresolved-match queue. Preserve ballot-entry grain, distinct songs from one film, multiple recipients, year conventions, original category labels, and genuine ties. Limit earlier person-level history parsing to acting/directing for launch.
+
+  **Acceptance:** deterministic reruns, valid foreign keys, correct song/recipient examples, explicit ambiguity and coverage gaps; fuzzy candidates never silently become verified identities. **Depends on:** `data-category-rule-registry`, `data-pinned-acquisition`.
+
+- [ ] **`data-coverage-validation` — Validating all-category coverage and temporal data integrity**
+
+  Implement `oscar-data validate`, DuckDB coverage checks, focused normalization/data-validation tests, and `data/coverage.csv` against the independent registry. Check ballot duplication, bridges, identity matches, nominee expectations, exceptions, category transitions, and temporal fields.
+
+  **Acceptance:** invalid fixtures fail and legitimate songs, multi-recipient entries, variable fields, and ties pass; real discrepancies fail clearly or remain explicitly disclosed. Final-test years may be inspected for data quality only, not feature/outcome relationships. **Depends on:** `data-category-rule-registry`, `data-normalized-ballots`.
+
+- [ ] **`data-dated-precursors` — Collecting dated mapped launch precursor records**
+
+  Complete the access/collection-rate go/no-go and collect feasible permitted DGA/PGA/SAG nominees, winners, result/availability dates, snapshots, mappings, and linked Oscar entities. Provide a documented 2027 update interface. Preserve non-Oscar-nominated winners and distinct missing/not-yet-held/not-applicable states.
+
+  **Acceptance:** reviewed contest/entity mappings and date evidence support both cutoffs; unknown timestamps cannot enter strict forecasts. An evidence-backed no-go with explicit unavailable statuses is acceptable if no sources are feasible; baseline research must not depend on acquiring unpermitted data. **Depends on:** `data-normalized-ballots`, `data-source-audit`.
+
+- [ ] **`data-approved-public-contract` — Exporting permission-approved public data contracts**
+
+  Define the approved `data/public/` schema/manifest and implement `oscar-data export-public` for only permitted fields and aggregates needed by articles/notebooks/site pages. Record source terms, attribution, versions, input checksums, generation time, and coverage limits. Keep public output paths free of case-insensitive "oscar".
+
+  **Acceptance:** allowlist, schema, provenance, and path tests pass; invalid/unapproved inputs fail rather than appear fresh; committed publication inputs work without private data or APIs. Optional fields require separate approval and do not block core exports. **Depends on:** `data-coverage-validation`, `data-source-audit`.
+
+### Forecast research and analysis
+
+- [x] **`model-cutoff-policy` — Defining dual-cutoff forecast and evaluation policy**
+
+  Write the versioned early-read and pre-final-voting primary forecast specification, including exact timezone-aware boundaries, availability evidence, contest/tie policies, model/snapshot identifiers, sparse-category treatment, and final-test quarantine. Verify the official 2027 schedule before season execution.
+
+  **Acceptance:** boundary fixtures demonstrate no future information; unverifiable features and unvalidated interim cutoffs are explicitly classified; model selection is based on the primary cutoff with the early read reported separately. **Depends on:** none.
+
+- [ ] **`model-dated-features` — Building leakage-safe feature snapshots**
+
+  Implement both-cutoff feature construction for contest rules, distinct same-film nomination counts, pre-cutoff actor/director history, and feasible mapped precursor signals. Distinguish absent/not-yet-held/not-applicable/missing sources; exclude current revenue/review/popularity and post-award information from historical forecasts.
+
+  **Acceptance:** cutoff, count, history, and missing-state tests pass; feature coverage and early-read precursor sparsity are reported. Fixture-based implementation can proceed before acquisition; real-source validation gates development evaluation. **Depends on:** `foundation-bootstrap`, `model-cutoff-policy`.
+
+- [ ] **`model-baseline-inference` — Implementing transparent baselines and shared inference contracts**
+
+  Implement uniform and documented mapped-precursor baselines, plus a pundit baseline only where time-valid coverage permits. Create a shared historical nominee-list inference interface with deterministic fallbacks, entry IDs, cutoff/model/data versions, and reliability status.
+
+  **Acceptance:** finite nonnegative probabilities sum to one per contest; evaluation and inference agree; missing signals, tied top picks, non-Oscar precursor winners, and sparse categories are handled explicitly. **Depends on:** `model-dated-features`.
+
+- [ ] **`model-pooled-challengers` — Implementing pooled logistic and conditional-logit candidates**
+
+  Implement pooled regularized logistic regression and a conditional-logit challenger, with documented contest-probability transformations, identifiability/convergence checks, and a defensible tied-winner training policy. Boosting remains optional after core work.
+
+  **Acceptance:** tested fits are reproducible and numerically stable; probabilities normalize and match inference; sparse/convergence failures use explicit fallback. Do not imply separately validated models for every category. **Depends on:** `model-dated-features`.
+
+- [ ] **`model-development-evaluation` — Running expanding-window development evaluation**
+
+  Implement 2010–2016 initial training followed by one-season-ahead development folds for 2017–2023 at both cutoffs. Keep all transforms, tuning, and optional calibration inside training windows. Produce versioned predictions, coverage, accuracy, probability metrics, matched baselines, calibration diagnostics, and ceremony-level development uncertainty.
+
+  **Acceptance:** split/train-transform tests prevent nominee-row or future leakage; ties and sparse categories follow policy; 2024–2026 feature/outcome relationships remain quarantined. Real data passes coverage checks, and precursor feasibility or explicit no-go is recorded. **Depends on:** `data-coverage-validation`, `data-dated-precursors`, `model-baseline-inference`, `model-pooled-challengers`.
+
+- [ ] **`model-preregister-selection` — Freezing ablations selection and development dry run**
+
+  Run development-only feature-group ablations and record numeric primary-cutoff model-selection criteria, frozen feature/transform/calibration/tie/fallback policies, and a successful dual-cutoff development-season inference rehearsal. Prefer the simpler model unless the challenger consistently earns its complexity; baseline-only selection is valid.
+
+  **Acceptance:** preregistration and dry-run evidence exist before opening the test; excluded optional features are disclosed and no choices are made from test performance. **Depends on:** `model-development-evaluation`.
+
+- [ ] **`model-final-test-refit` — Evaluating frozen final tests and refitting deployment artifacts**
+
+  Evaluate 2024–2026 sequentially using only earlier completed seasons, at both cutoffs, with decisions frozen. Publish per-year/category metrics, matched baseline differences, tie sensitivity, and limitations without a three-ceremony bootstrap interval. Transparently log post-opening bugs and before/after fixes.
+
+  **Acceptance:** reproducible historical artifacts and inference checks pass; selected approach is refit on eligible 2010–2026 data only after test reporting; model card explains both cutoffs, coverage, normalization, and sparse categories. **Depends on:** `model-preregister-selection`.
+
+- [ ] **`analysis-verified-flagship` — Writing the verified flagship analysis and bounded follow-up stories**
+
+  After final-test completion, write one article and selected reproducible notebook from verified findings with an explicit question, auditable denominators, interactive-chart inputs, matched comparisons, coverage, uncertainty, and noncausal caveats. Negative/inconclusive results are valid.
+
+  **Acceptance:** claims trace to permitted inputs and frozen evaluation; content is ready for site integration. Optional later pundit and box-office stories follow section 7 and do not gate completion of this task or launch. **Depends on:** `model-final-test-refit`.
+
+### Repository, website, and release
+
+- [x] **`repo-auditing-public-history` — Auditing tracked history for public release**
+
+  Review every branch/tag and reachable history intended for exposure, current/staged files, notebook outputs, and downloads for secrets, restricted data, models, and unreviewed assets. Record public-release acceptance and any needed remediation; ignore rules alone do not remove already tracked content.
+
+  **Acceptance:** all refs to be exposed are clean; unresolved assets remain excluded/private. Unused source-license questions do not block a clean minimal site. This audit does not itself change visibility or hosting. **Depends on:** none.
+
+- [ ] **`repo-renaming-public-licensing` — Renaming and licensing the public repository**
+
+  Following audit acceptance, rename to `juliakm/awards-patterns`, update the local remote and documentation, add the selected code license and separate-data-terms notice, and change visibility to public. Review newly introduced files again before exposure.
+
+  **Acceptance:** canonical repo/remote links and public visibility are verified; only reviewed material is exposed; license boundaries are explicit. **Depends on:** `foundation-bootstrap`, `repo-auditing-public-history`.
+
+- [x] **`site-minimal-root-quarto` — Creating the minimal root Quarto site**
+
+  Create `_quarto.yml` and root `index.qmd` with honest readiness content, explicit render/resource allowlists, reviewed saved outputs, and freeze configuration. No data/model acquisition is needed for the minimal page.
+
+  **Acceptance:** root Home renders offline to `_site/index.html`; only intended material is included; every published path, including assets/downloads/notebooks, excludes case-insensitive "oscar". **Depends on:** none.
+
+- [ ] **`release-offline-pages-workflows` — Building offline checks and Pages artifact workflows**
+
+  Implement locked/pinned checks and Pages workflows with focused tests, Ruff, public-data validation, offline rendering, reviewed output freshness, and least-needed deployment permissions. Upload only `_site/`, never the checkout; keep acquisition/training out of CI publishing.
+
+  **Acceptance:** clean render/checks work without private inputs/APIs; an injected forbidden path fails the guard; artifacts exclude secrets, raw data, models, and unselected notebooks. Live Pages remains gated by approved repository publication. **Depends on:** `foundation-bootstrap`, `site-minimal-root-quarto`.
+
+- [ ] **`release-proving-public-deployment` — Proving safe public Pages deployment**
+
+  Enable Actions-based Pages after publication approval and deploy the reviewed minimal artifact to `https://juliakm.github.io/awards-patterns/`. Verify actual HTTP responses, root entry, project-subpath assets, artifact inventory, and public settings.
+
+  **Acceptance:** public Home and static navigation work with no Python server, private inputs, or unintended exposure; the early proof does not wait for full articles/models. **Depends on:** `release-offline-pages-workflows`, `repo-renaming-public-licensing`, `site-minimal-root-quarto`.
+
+- [ ] **`site-integrating-public-navigation` — Integrating accessible pages charts and notebooks**
+
+  Integrate Home/About/Methods/Predictions, the approved flagship article, Plotly charts, model/data documentation, and selected notebook/code links. Show coverage, source terms, update timestamps, both forecast policies, limitations, and required attributions.
+
+  **Acceptance:** navigation and charts work under `/awards-patterns/` without Python services; mobile/keyboard checks and public-path rules pass; no real 2027 forecast appears before verified nominees. **Depends on:** `analysis-verified-flagship`, `data-approved-public-contract`, `model-final-test-refit`, `site-minimal-root-quarto`.
+
+- [ ] **`release-rehearsing-launch` — Rehearsing historical inference and freezing launch**
+
+  Rehearse a completed historical season end to end: permitted-input restore, nominees/identities/bridges, both cutoff snapshots, inference/fallback, forecast publication, and scoring. Apply the January 14 launch checklist with the January 15–20 repair buffer and official schedule/source monitoring.
+
+  **Acceptance:** dual-cutoff evaluation/rehearsal evidence, public Home and actual article URL, accessible charts/notebook, honest coverage, and artifact/history audits pass. Label reduced scope; fix integration defects without changing frozen model choices. **Depends on:** `data-coverage-validation`, `model-final-test-refit`, `release-proving-public-deployment`, `site-integrating-public-navigation`.
+
+- [ ] **`season-freezing-2027-forecasts` — Freezing season forecasts and publishing postmortem**
+
+  Execute the verified-calendar season runbook: import official nominees, validate identities and both cutoffs, publish separate early-read and primary forecasts with immutable files, versions, timestamps, SHA-256 hashes, public commits, and third-party archive evidence. Preserve earlier forecasts; mark other interim updates unvalidated.
+
+  **Acceptance:** after verified ceremony results, score the original hashed forecasts against baselines and publish a linked postmortem. Unsupported/fallback categories remain explicit; forecast files are never overwritten. This task extends through the 2027 season rather than blocking January website launch. **Depends on:** `release-rehearsing-launch`.
