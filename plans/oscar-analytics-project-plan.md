@@ -206,7 +206,8 @@ Install `uv` and the separate Quarto CLI through their official installers if ab
 - [ ] Adjust the generated Python package to `oscar_patterns` and add an `oscar-data` console entry point in `pyproject.toml`.
 - [ ] Confirm `.gitignore` still covers environments, secrets, raw/curated datasets, model binaries, caches, and `_site/` before each new data source is added.
 - [ ] Create README with setup, pipeline commands, source requirements, and public-site URL.
-- [ ] Review the full commit history and staged files for source data, secrets, and restricted content, then create the public `awards-patterns` GitHub repository and connect the local repository.
+- [ ] Rename the existing private `juliakm/oscar-patterns` repository to `awards-patterns` before enabling Pages, then update the local remote. As of October 31, 2026, Pages was not enabled and the new name was available.
+- [ ] Review the full commit history and staged files for source data, secrets, and restricted content, then change the repository's visibility to public.
 - [ ] Add a code license and a README note that data has separate source terms and is not covered by that license.
 - [ ] Confirm Pages deploys from the public repository through GitHub Actions.
 
@@ -351,7 +352,7 @@ Full competitive-category coverage is a launch goal, not something to claim if t
 
 ## 9. Hosting, automation, and publication controls
 
-Use the project Pages URL `https://juliakm.github.io/awards-patterns/`. A project Pages path comes from the repository name, so name the GitHub repository `awards-patterns`.
+Use the project Pages URL `https://juliakm.github.io/awards-patterns/`. A project Pages path comes from the repository name, so rename the existing `oscar-patterns` GitHub repository to `awards-patterns` before Pages is enabled.
 
 No part of the live site's path may contain "oscar" or "oscars" in any letter case. This covers the repository name, page and article slugs, notebook paths, downloads, and other published assets. It does not restrict the internal Python package name, local folder name, or Oscar references in page text.
 
