@@ -78,5 +78,6 @@ The timing points to a rule change. For the 2010 ceremony, the Academy went back
 
 - A nomination is one line on the ballot, so two nominated songs from one film count twice.
 - Honorary and scientific awards aren't counted.
+- Entries the Academy doesn't treat as official nominations, such as write-ins and withdrawn nominations, aren't counted unless they won.
 - I left out years when two or more films tied for the most nominations, which happened at 4 of the 17 ceremonies since 2010.
 - I split the years at 2010 because of the ballot change, but I chose that split after seeing the data. Treat the gap as something to keep watching.

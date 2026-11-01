@@ -19,7 +19,7 @@ Early numbers below cover ceremonies through 2023 and come from a quick explorat
 ## Before relying on numbers
 
 - Spot-check against the Academy's database. `data/curated/spot_check_kaggle_v13.csv` (private) lists cases to check.
-- Bette Davis shows 11 acting nominations in the file, possibly including a write-in. Check before publishing career totals.
+- The loader drops rows the file marks as unofficial, unless they won or are from ceremony 2, which never announced nominees. Recount the early numbers above with it.
 - The Academy's terms for its data haven't been reviewed. Publish summaries and small tables only, and keep raw files private.
 
 ## Shelved

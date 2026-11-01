@@ -24,7 +24,15 @@ def load_nominations(path: Path = RAW_FILE) -> pd.DataFrame:
     rows["Ceremony"] = rows["Ceremony"].astype(int)
     rows["ceremony_year"] = rows["Ceremony"].map(ceremony_year)
     rows["won"] = rows["Winner"] == "True"
-    return rows
+    # The file also lists write-ins, withdrawn nominations and preliminary lists.
+    # Write-ins can still win, and ceremony 2 never announced nominees, so its
+    # flagged rows are the only field that year.
+    unofficial = (
+        rows["Note"].str.contains("NOT AN OFFICIAL NOMINATION", regex=False)
+        & ~rows["won"]
+        & (rows["Ceremony"] != 2)
+    )
+    return rows[~unofficial]
 
 
 def film_totals(nominations: pd.DataFrame) -> pd.DataFrame:

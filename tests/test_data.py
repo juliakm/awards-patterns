@@ -14,7 +14,8 @@ from oscar_patterns.data import (
     most_nominated_table,
 )
 
-COLUMNS = "Ceremony Year Class CanonicalCategory Category Film FilmId Name Winner"
+COLUMNS = "Ceremony Year Class CanonicalCategory Category Film FilmId Name Winner Note"
+UNOFFICIAL = "NOTE: THIS IS NOT AN OFFICIAL NOMINATION."
 PUBLIC_TABLE = Path("data/public/most-nominated.csv")
 needs_raw = pytest.mark.skipif(not RAW_FILE.exists(), reason="raw data is private")
 
@@ -22,11 +23,14 @@ needs_raw = pytest.mark.skipif(not RAW_FILE.exists(), reason="raw data is privat
 @pytest.fixture
 def sample(tmp_path):
     rows = [
-        "1\t2000\tTitle\tBEST PICTURE\tBEST PICTURE\tA\ttt1\tP\tTrue",
-        "1\t2000\tTitle\tBEST PICTURE\tBEST PICTURE\tB\ttt2\tP\t",
-        "1\t2000\tActing\tACTOR\tACTOR\tB|C\ttt2|tt3\tN\t",
-        "1\t2000\tWriting\tWRITING\tWRITING\tB\ttt2\tW\tTrue",
-        "1\t2000\tSpecial\tHONORARY AWARD\tHONORARY AWARD\tA\ttt1\tH\tTrue",
+        "1\t2000\tTitle\tBEST PICTURE\tBEST PICTURE\tA\ttt1\tP\tTrue\t",
+        "1\t2000\tTitle\tBEST PICTURE\tBEST PICTURE\tB\ttt2\tP\t\t",
+        "1\t2000\tActing\tACTOR\tACTOR\tB|C\ttt2|tt3\tN\t\t",
+        "1\t2000\tWriting\tWRITING\tWRITING\tB\ttt2\tW\tTrue\t",
+        "1\t2000\tSpecial\tHONORARY AWARD\tHONORARY AWARD\tA\ttt1\tH\tTrue\t",
+        f"1\t2000\tActing\tACTRESS\tACTRESS\tA\ttt1\tLoser\t\t{UNOFFICIAL}",
+        f"1\t2000\tProduction\tCAMERA\tCAMERA\tC\ttt3\tWinner\tTrue\t{UNOFFICIAL}",
+        f"2\t2001\tDirecting\tDIRECTING\tDIRECTING\tD\ttt4\tField\t\t{UNOFFICIAL}",
     ]
     path = tmp_path / "sample.tsv"
     path.write_text("\n".join(["\t".join(COLUMNS.split()), *rows]), encoding="utf-8")
@@ -37,10 +41,16 @@ def test_honorary_awards_are_excluded(sample):
     assert "Special" not in set(sample["Class"])
 
 
+def test_unofficial_rows_drop_unless_they_won_or_are_ceremony_two(sample):
+    names = set(sample["Name"])
+    assert "Loser" not in names
+    assert {"Winner", "Field"} <= names
+
+
 def test_a_row_naming_two_films_counts_for_both(sample):
     totals = film_totals(sample).set_index("film")
     assert totals.loc["B", "nominations"] == 3
-    assert totals.loc["C", "nominations"] == 1
+    assert totals.loc["C", "nominations"] == 2
 
 
 def test_table_compares_leader_with_picture_winner(sample):
@@ -98,11 +108,27 @@ def test_film_totals_match_well_known_records(film, ceremony, nominations, wins)
 
 
 @needs_raw
+def test_unofficial_entries_follow_the_academys_count():
+    rows = load_nominations()
+    davis = rows[(rows["Name"] == "Bette Davis") & (rows["Class"] == "Acting")]
+    assert len(davis) == 10
+    assert "Alone Yet Not Alone" not in set(rows["Film"])
+    # Hal Mohr won as a write-in, so his row stays.
+    mohr = rows[(rows["Name"] == "Hal Mohr") & (rows["Ceremony"] == 8)]
+    assert mohr["won"].all() and len(mohr) == 1
+
+
+@needs_raw
 def test_public_table_is_current():
     built = most_nominated_table(load_nominations())
     published = pd.read_csv(PUBLIC_TABLE)
-    assert built["picture_winner"].tolist() == published["picture_winner"].tolist()
-    assert built["most_nominated"].tolist() == published["most_nominated"].tolist()
+    columns = [
+        "picture_winner",
+        "picture_winner_nominations",
+        "most_nominated",
+        "most_nominations",
+    ]
+    assert built[columns].to_dict("list") == published[columns].to_dict("list")
 
 
 def test_public_table_has_one_row_per_ceremony():
