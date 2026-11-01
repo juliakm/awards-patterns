@@ -1,0 +1,13 @@
+---
+title: "About"
+---
+
+Awards Patterns is a fan project that tests common ideas about the Oscars against the record. The results show what happened, but they can't tell you why voters chose what they did. A handful of ceremonies can also make a pattern look stronger than it is.
+
+## Where the data comes from
+
+Nominees and winners come from [The Oscar Award](https://www.kaggle.com/datasets/unanimad/the-oscar-award) on Kaggle (version 13), compiled by Raphael Fontes with additional data from David Lu's [oscar_data](https://github.com/DLu/oscar_data). It covers ceremonies through 2026. The dataset's uploader labels it CC0, and this site publishes only summaries and small tables built from it.
+
+Experiments count competitive categories and leave out honorary and scientific awards. Spotted a mistake? [Open an issue](https://github.com/juliakm/awards-patterns/issues).
+
+The project isn't affiliated with or endorsed by the Academy of Motion Picture Arts and Sciences.

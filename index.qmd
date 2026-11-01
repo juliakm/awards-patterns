@@ -1,47 +1,19 @@
 ---
 title: "Awards Patterns"
-description: "Readable stories about awards, built on verified data and transparent methods."
+description: "Experiments on Oscar history for movie fans."
 ---
 
-Readable stories about the Oscars: who predicts well, which precursor awards help, and what the evidence can—and cannot—tell us.
+Oscar arguments are more fun with numbers, so this site takes the ones fans keep having and checks them against the record.
 
-::: {.callout-note title="Project status: foundation in progress"}
-This is an early, static project homepage, not a completed analysis or forecast service. No model has been trained, no historical backtest results are published, and **no actual 2027 probabilities are available**.
-:::
+## Experiments
 
-## First story, when the evidence is ready {#first-story}
+### [Does the most-nominated film win Best Picture?](experiments/most-nominated.qmd)
 
-**Which precursor awards actually help?**
+It used to be a good bet. From 1981 to 2009, the film with the most nominations won 16 times out of 23, not counting ties. Since 2010, it has won 4 out of 13.
 
-The planned article will compare category-specific precursor agreement and test whether those signals improve predictions in later, unseen seasons. Publication depends on verified source permissions, dated inputs, reviewed coverage, and a frozen evaluation—not on finding a surprising result. A negative or inconclusive finding is worth reporting.
+## Coming up
 
-A comparison of pundits and consensus forecasts may lead instead if its data and reuse permissions are verified first. A later story will explore box office while separating descriptive lifetime revenue from information available before a forecast.
-
-*There is no published article yet.* Articles and selected technical notebooks will be added individually after review; this milestone publishes only Home.
-
-## Data and model readiness {#readiness}
-
-| Area | Current status |
-|:-----|:---------------|
-| Historical scope | Planned coverage: all competitive categories, ceremony years **2010–2026**. Actual completeness has not yet been verified. |
-| Source data | Source permissions, snapshots, category changes, and missingness remain under review. No source records or downloadable datasets are published here. |
-| Historical evaluation | Not run. The planned final-test years, 2024–2026, remain reserved for frozen evaluation rather than model selection. |
-| Model | **Not trained.** No fitted model or validated performance claims are available. |
-| 2027 forecasts | Not available. Actual probabilities require verified nominees, approved time-valid inputs, and a validated model or explicitly labeled baseline. |
-
-**Status updated:** October 31, 2026. There is no published data or model update timestamp yet because neither artifact has been released.
-
-## How this will work {#methods}
-
-Articles will lead with a clear question, auditable denominators, uncertainty, and limitations. Methods and selected notebooks will explain how each finding can be reproduced.
-
-Only approved public extracts and reviewed saved results will support published analysis. Acquisition and training stay separate from the website build. This homepage requires no datasets, live APIs, or running Python server.
-
-### Known limitations
-
-- The 2010–2026 window is a target, not a claim of complete data.
-- Category definitions and field sizes change across ceremonies; comparisons must account for those changes.
-- Predictive agreement is not evidence that a precursor award or revenue causes an Oscar win.
-- There are no interactive charts, article findings, or forecasts to inspect yet.
-
-[Read the planned first story](#first-story) · [Check current readiness](#readiness)
+- Are Best Picture and Best Director splitting more often?
+- Is "overdue" real, or do voters not care how many times you've lost?
+- Which other Oscar goes hand in hand with Best Picture?
+- Who has had the worst luck in Oscar history?
