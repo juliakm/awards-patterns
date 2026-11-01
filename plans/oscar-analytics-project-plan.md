@@ -98,6 +98,29 @@ The following reflects checks made October 31, 2026. A documentation page being 
 
 **Knowledge-graph candidate:** investigate whether permitted `fckg` records can feed the existing relational tables and identity crosswalks. Borrow its explicit nomination grain, award-concept mappings, and forecast provenance without requiring an RDF database or expanding the launch architecture. Preserve this project's multi-winner exceptions and temporal safeguards; do not import current revenue, ratings, or popularity into historical forecasts without as-of evidence.
 
+### Awards Daily pundit charts
+
+This work is optional, follows the first article, and does not block the January launch or the model. Recent charts are images and older charts are HTML tables, so both need transcription rather than a single scraper.
+
+**Ask first:** send Awards Daily a short note about the noncommercial project. Ask for permission to transcribe the charts and publish attributed accuracy summaries; whether original spreadsheets, pick dates, or pre-ceremony chart versions exist; and what the chart colors mean. If they decline or do not reply, the pundit article stays optional and no extraction runs.
+
+**If permitted:**
+
+1. Keep chart images private, with URL, checksum, and retrieval date.
+2. Transcribe each chart to one row per contributor, chart position, and category, using a vision model for images and a parser for HTML tables. Keep the original cell text.
+3. Match every pick to that ceremony's official nominees, and send unmatched or truncated picks to a manual review queue.
+4. Hand-check a sample of each chart. Pilot one 2017–2023 chart and measure its error rate before transcribing the rest.
+
+**Rules for the transcribed data:**
+
+- Take winners from the Oscar data. Red text appears to mark winners on at least one 2026 chart, so record text color only as evidence of when the chart was annotated.
+- Treat a blank cell as missing, not a wrong pick.
+- Keep repeated contributor rows separate and flag them for review. Michael Grei has two 2026 rows whose picks match on one chart and differ on another.
+- Keep contributor order and repeated header positions, because rows may have been added at different times.
+- Record which categories each chart covers. The two 2026 charts reviewed so far cover 15 of 24 categories.
+- Use final charts for accuracy analysis, not as model features, unless dated evidence shows a pick existed before the forecast cutoff.
+- Do not score 2024–2026 charts until the frozen test has run.
+
 ### First source-audit deliverable
 
 Create `data/source_registry.csv` and `data/coverage.csv`, plus a short source-audit notebook.
@@ -570,6 +593,12 @@ Repository renaming, public visibility, and Pages setup were authorized subject 
   After final-test completion, write the second article and selected reproducible notebook from verified findings with an explicit question, auditable denominators, interactive-chart inputs, matched comparisons, coverage, uncertainty, and noncausal caveats. Negative/inconclusive results are valid.
 
   **Acceptance:** claims trace to permitted inputs and frozen evaluation; content is ready for site integration. Optional later pundit and box-office stories follow section 7 and do not gate completion of this task or launch. **Depends on:** `model-final-test-refit`.
+
+- [ ] **`data-awards-daily-pundits` — Requesting permission and piloting pundit chart transcription (optional)**
+
+  After the first article, ask Awards Daily about permission, source files, pick dates, earlier chart versions, and colors. If permitted, follow the section 3 process, starting with a one-chart pilot from 2017–2023. Add the `predictions` table only if the pilot succeeds.
+
+  **Acceptance:** the reply or lack of reply is recorded; any pilot reports a measured error rate, all picks match official nominees or remain in review, and no 2024–2026 picks are scored before the frozen test. This task does not gate launch. **Depends on:** `analysis-descriptive-first`, `data-normalized-ballots`.
 
 ### Repository, website, and release
 
