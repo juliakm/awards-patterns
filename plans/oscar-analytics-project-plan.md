@@ -206,14 +206,14 @@ quarto check
 
 Install `uv` and the separate Quarto CLI through their official installers if absent. Keep Python and Quarto versions pinned to a tested combination in local setup and CI.
 
-- [ ] Check for existing files before scaffolding; preserve this plan and other work.
-- [ ] Adjust the generated Python package to `oscar_patterns` and add an `oscar-data` console entry point in `pyproject.toml`.
-- [ ] Confirm `.gitignore` still covers environments, secrets, raw/curated datasets, model binaries, caches, and `_site/` before each new data source is added.
-- [ ] Create README with setup, pipeline commands, source requirements, and public-site URL.
-- [ ] Rename the existing private `juliakm/oscar-patterns` repository to `awards-patterns` before enabling Pages, then update the local remote. As of October 31, 2026, Pages was not enabled and the new name was available.
-- [ ] Review the full commit history and staged files for source data, secrets, and restricted content, then change the repository's visibility to public.
-- [ ] Add a code license and a README note that data has separate source terms and is not covered by that license.
-- [ ] Confirm Pages deploys from the public repository through GitHub Actions.
+- [x] Check for existing files before scaffolding; preserve this plan and other work.
+- [x] Adjust the generated Python package to `oscar_patterns` and add an `oscar-data` console entry point in `pyproject.toml`.
+- [x] Confirm `.gitignore` still covers environments, secrets, raw/curated datasets, model binaries, caches, and `_site/` before each new data source is added.
+- [x] Create README with setup, pipeline commands, source requirements, and public-site URL.
+- [x] Rename the existing private `juliakm/oscar-patterns` repository to `awards-patterns` before enabling Pages, then update the local remote. As of October 31, 2026, Pages was not enabled and the new name was available.
+- [x] Review the full commit history and staged files for source data, secrets, and restricted content, then change the repository's visibility to public.
+- [x] Add a code license and a README note that data has separate source terms and is not covered by that license.
+- [x] Confirm Pages deploys from the public repository through GitHub Actions.
 
 ### Pipeline interface to implement
 
@@ -431,9 +431,11 @@ Each ID matches its session todo. Check off tasks here and update their session 
 
 **Initially ready to start independently:** `foundation-bootstrap`, `data-source-audit`, `model-cutoff-policy`, `repo-auditing-public-history`, and `site-minimal-root-quarto`.
 
-Repository renaming, public visibility, and Pages setup were authorized subject to the public-history audit. The repository is now public at `juliakm/awards-patterns`; Pages deployment remains unchecked until its workflow and actual public URL are verified.
+Repository renaming, public visibility, and Pages setup were authorized subject to the public-history audit. The repository is now public at `juliakm/awards-patterns`; the first milestone is complete and the HTTPS homepage is verified at `https://juliakm.com/awards-patterns/`.
 
 **Execution checkpoint, October 31:** Python 3.12.16, uv 0.13.6, and Quarto 1.10.20 are installed and tested locally. The initial Python suite passes 16 tests; the minimal homepage renders. The source audit is complete but has not cleared a primary/fallback bulk-data permission path. Acquisition and the independently verified category registry are blocked on source permissions/access; no actual Oscar dataset, fitted model, or empirical results are claimed. See `data/source_audit.json` for evidence and next steps. Code/site infrastructure can proceed without publishing source records.
+
+**First milestone verified, November 1:** both GitHub checks and Pages deployment succeeded with 53 committed tests. The public homepage, GitHub-address redirect, CSS, JavaScript, and approved artifact paths were verified over HTTPS. The audit covers 25 candidate sources with 24 linked evidence records; its notebook executes offline. The first CI attempt exposed a platform-specific Cosmo stylesheet fingerprint, now fixed with explicit reviewed macOS/Linux variants and regression tests. See `artifacts/public-release-audit.json` for run links and proof. No model training or future-season work was performed. Uncommitted feature drafts from a cancelled agent are preserved locally, not published, and their todo remains pending.
 
 ### Python foundation and data
 
@@ -561,7 +563,7 @@ Repository renaming, public visibility, and Pages setup were authorized subject 
 
   **Acceptance:** clean render/checks work without private inputs/APIs; an injected forbidden path fails the guard; artifacts exclude secrets, raw data, models, and unselected notebooks. Live Pages remains gated by approved repository publication. **Depends on:** `foundation-bootstrap`, `site-minimal-root-quarto`.
 
-- [ ] **`release-proving-public-deployment` — Proving safe public Pages deployment**
+- [x] **`release-proving-public-deployment` — Proving safe public Pages deployment**
 
   Enable Actions-based Pages after publication approval and deploy the reviewed minimal artifact to `https://juliakm.github.io/awards-patterns/`. Verify actual HTTP responses, root entry, project-subpath assets, artifact inventory, and public settings.
 

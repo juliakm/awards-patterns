@@ -8,7 +8,10 @@ The configured public website is <https://juliakm.com/awards-patterns/>.
 GitHub Pages inherits the account's existing `juliakm.com` domain; the
 `juliakm.github.io/awards-patterns/` address redirects there. This project's HTTPS
 setting is enabled, without changing the account's other sites.
-Deployment is **not live or verified** merely because this URL is documented.
+The homepage, redirect, CSS, and JavaScript were verified over HTTPS on
+November 1, 2026. GitHub Actions passed all 53 committed tests, lint/format
+checks, artifact validation, and deployment. See
+[publication evidence](artifacts/public-release-audit.json).
 
 ## Local setup
 

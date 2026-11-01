@@ -3,7 +3,7 @@
   "review_date": "2026-10-31",
   "repository_before_publication": "juliakm/oscar-patterns",
   "initial_visibility": "PRIVATE",
-  "result": "initial_history_accepted",
+  "result": "history_and_first_milestone_publication_accepted",
   "reviewed_commits": [
     "dab380e2de7198e1ed5620092023baba08fb0a91",
     "7576ee7",
@@ -24,10 +24,40 @@
   "reviewed_content": "Project planning text and ignore rules; no historical raw data, notebooks, models, images, or third-party chart extracts.",
   "unexpected_path_flags": 0,
   "credential_pattern_flags": 0,
+  "verified_publication": {
+    "verification_date": "2026-11-01",
+    "repository": "https://github.com/juliakm/awards-patterns",
+    "visibility": "PUBLIC",
+    "code_license": "MIT",
+    "first_successful_deployment_commit": "a47a4a295520cf80eb10fb20c53f42d2ee755ea3",
+    "checks_run": "https://github.com/juliakm/awards-patterns/actions/runs/41258101352",
+    "pages_run": "https://github.com/juliakm/awards-patterns/actions/runs/41258101338",
+    "checks_conclusion": "success",
+    "pages_conclusion": "success",
+    "committed_tests_passed": 53,
+    "approved_artifact_files": 18,
+    "site": "https://juliakm.com/awards-patterns/",
+    "github_address": "https://juliakm.github.io/awards-patterns/",
+    "observed_home_status": 200,
+    "observed_redirect_target": "https://juliakm.com/awards-patterns/",
+    "observed_css_status": 200,
+    "observed_javascript_status": 200,
+    "https_enforced": true,
+    "domain_configuration": "Inherited existing account domain; no other site's domain configuration changed.",
+    "published_scope": "Data-free, nonexecuting homepage only. Repository metadata/notebooks are not included in the website artifact.",
+    "source_registry_records": 25,
+    "source_evidence_records": 24,
+    "source_notebook": "Format and offline execution validated; validation outputs remain in ignored .tools/.",
+    "source_clearance": "No primary/fallback bulk acquisition path cleared; source records and models were not acquired or published.",
+    "preserved_uncommitted_drafts": [
+      "src/oscar_patterns/features.py",
+      "tests/test_features.py"
+    ]
+  },
   "limitations": [
     "Credential-pattern checks are a supporting check, not a guarantee that arbitrary sensitive material can be detected.",
     "Implementation files introduced after this inventory must be reviewed before committing, pushing, or changing repository visibility.",
     "Ignore rules do not remove files that are already tracked."
   ],
-  "publication_gate": "Recheck the current tracked/staged inventory and all newly introduced assets before making the repository public."
+  "publication_gate": "Reviewed milestone files were checked before commit/push. Continue reviewing every newly introduced asset before publication; ignore rules and pattern checks are not a substitute for source permission or content review."
 }
