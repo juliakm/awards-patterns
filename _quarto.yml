@@ -1,25 +1,28 @@
 project:
   type: website
   output-dir: _site
-  # Add approved articles and individual notebooks explicitly; never use globs.
   render:
     - index.qmd
-  resources: []
+    - about.qmd
+    - experiments/*.qmd
 
 execute:
-  freeze: auto
+  echo: false
+  warning: false
 
 website:
   title: "Awards Patterns"
   site-url: https://juliakm.com/awards-patterns/
-  description: "An article-first project exploring award patterns with transparent evidence and reproducible methods."
+  description: "Experiments on Oscar history for movie fans."
   search: false
   navbar:
     left:
       - href: index.qmd
-        text: Home
+        text: Experiments
+      - href: about.qmd
+        text: About
   page-footer:
-    left: "An independent research project. Not affiliated with the Academy."
+    left: "An independent fan project. Not affiliated with the Academy."
 
 format:
   html:

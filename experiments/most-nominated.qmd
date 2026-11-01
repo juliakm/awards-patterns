@@ -1,0 +1,82 @@
+---
+title: "Does the most-nominated film win Best Picture?"
+description: "It used to be a good bet. Since 2010, it usually loses."
+jupyter: python3
+---
+
+```{python}
+import pandas as pd
+import plotly.graph_objects as go
+from IPython.display import Markdown
+
+table = pd.read_csv("../data/public/most-nominated.csv")
+clear = table[~table["tied_for_most"] & (table["year"] >= 1981)]
+```
+
+You'd guess yes. Nominations show how much the Academy likes a film across all its branches, so the film with the most ought to be the favorite.
+
+For decades, it was. From 1981 to 2009, a film that led the nominations outright won Best Picture 16 times out of 23. From 2010 through 2026, it won 4 times out of 13.
+
+```{python}
+#| fig-alt: "Timeline of ceremonies from 1981 to 2026. Most nomination leaders won Best Picture before 2010. Most have lost since."
+fig = go.Figure()
+for won, name, color, symbol in [
+    (True, "Won Best Picture", "#1a7f5a", "circle"),
+    (False, "Lost Best Picture", "#c2410c", "x"),
+]:
+    rows = clear[clear["most_nominated_won"] == won]
+    fig.add_trace(
+        go.Scatter(
+            x=rows["year"],
+            y=rows["most_nominations"],
+            mode="markers",
+            name=name,
+            marker={"color": color, "symbol": symbol, "size": 11},
+            customdata=rows[["most_nominated", "picture_winner"]],
+            hovertemplate=(
+                "%{x}: %{customdata[0]}<br>%{y} nominations"
+                "<br>Best Picture: %{customdata[1]}<extra></extra>"
+            ),
+        )
+    )
+fig.add_vline(x=2009.5, line_dash="dot", line_color="#6b7280")
+fig.update_layout(
+    template="plotly_white",
+    height=380,
+    margin={"l": 50, "r": 20, "t": 20, "b": 50},
+    xaxis_title="Ceremony year",
+    yaxis_title="Nominations for the leader",
+    legend={"orientation": "h", "y": 1.08},
+)
+fig.show()
+```
+
+## Every clear leader since 2010
+
+```{python}
+recent = clear[clear["year"] >= 2010]
+rows = [
+    "| Year | Most nominated | Noms | Best Picture winner | Noms |",
+    "|:---|:------|--:|:------|--:|",
+]
+for row in recent.itertuples():
+    leader = f"**{row.most_nominated}**" if row.most_nominated_won else row.most_nominated
+    rows.append(
+        f"| {row.year} | {leader} | {row.most_nominations} "
+        f"| {row.picture_winner} | {row.picture_winner_nominations} |"
+    )
+Markdown("\n".join(rows))
+```
+
+Bold marks a leader that won. *La La Land* had 14 nominations and lost to *Moonlight*. *Sinners* had 16 and lost to *One Battle after Another*.
+
+## Why it might have changed
+
+The timing points to a rule change. For the 2010 ceremony, the Academy went back to a ranked ballot for Best Picture and let in more than five films. Nominations can pile up for a film that impresses the craft branches, but a ranked ballot can favor the one most voters like. We can't prove that from these numbers, and 13 ceremonies isn't many.
+
+## How we counted
+
+- A nomination is one line on the ballot, so two nominated songs from one film count twice.
+- Honorary and scientific awards aren't counted.
+- We left out years when two or more films tied for the most nominations, which happened at 4 of the 17 ceremonies since 2010.
+- We split the years at 2010 because of the ballot change, but we chose that split after seeing the data. Treat the gap as something to keep watching.

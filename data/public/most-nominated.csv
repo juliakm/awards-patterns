@@ -1,0 +1,99 @@
+ceremony,year,picture_winner,picture_winner_nominations,most_nominated,most_nominations,tied_for_most,most_nominated_won
+1,1929,Wings,2,7th Heaven,5,False,False
+2,1930,The Broadway Melody,3,In Old Arizona / The Patriot,5,True,False
+3,1930,All Quiet on the Western Front,4,The Love Parade,6,False,False
+4,1931,Cimarron,7,Cimarron,7,False,True
+5,1932,Grand Hotel,1,Arrowsmith / The Champ,4,True,False
+6,1934,Cavalcade,4,A Farewell to Arms / Cavalcade / Lady for a Day,4,True,True
+7,1935,It Happened One Night,5,One Night of Love,6,False,False
+8,1936,Mutiny on the Bounty,8,Mutiny on the Bounty,8,False,True
+9,1937,The Great Ziegfeld,7,Anthony Adverse / Dodsworth / The Great Ziegfeld,7,True,True
+10,1938,The Life of Emile Zola,10,The Life of Emile Zola,10,False,True
+11,1939,You Can't Take It with You,7,You Can't Take It with You,7,False,True
+12,1940,Gone with the Wind,13,Gone with the Wind,13,False,True
+13,1941,Rebecca,11,Rebecca,11,False,True
+14,1942,How Green Was My Valley,10,Sergeant York,11,False,False
+15,1943,Mrs. Miniver,12,Mrs. Miniver,12,False,True
+16,1944,Casablanca,8,The Song of Bernadette,12,False,False
+17,1945,Going My Way,10,Going My Way / Wilson,10,True,True
+18,1946,The Lost Weekend,7,The Bells of St. Mary's,8,False,False
+19,1947,The Best Years of Our Lives,8,The Best Years of Our Lives,8,False,True
+20,1948,Gentleman's Agreement,8,Gentleman's Agreement,8,False,True
+21,1949,Hamlet,7,Johnny Belinda,12,False,False
+22,1950,All the King's Men,7,The Heiress,8,False,False
+23,1951,All about Eve,14,All about Eve,14,False,True
+24,1952,An American in Paris,8,A Streetcar Named Desire,12,False,False
+25,1953,The Greatest Show on Earth,5,High Noon / Moulin Rouge / The Quiet Man,7,True,False
+26,1954,From Here to Eternity,13,From Here to Eternity,13,False,True
+27,1955,On the Waterfront,12,On the Waterfront,12,False,True
+28,1956,Marty,8,Love Is a Many-Splendored Thing / Marty / The Rose Tattoo,8,True,True
+29,1957,Around the World in 80 Days,8,Giant,10,False,False
+30,1958,The Bridge on the River Kwai,8,Sayonara,10,False,False
+31,1959,Gigi,9,Gigi / The Defiant Ones,9,True,True
+32,1960,Ben-Hur,12,Ben-Hur,12,False,True
+33,1961,The Apartment,10,The Apartment,10,False,True
+34,1962,West Side Story,11,Judgment at Nuremberg / West Side Story,11,True,True
+35,1963,Lawrence of Arabia,10,Lawrence of Arabia,10,False,True
+36,1964,Tom Jones,10,Tom Jones,10,False,True
+37,1965,My Fair Lady,12,Mary Poppins,13,False,False
+38,1966,The Sound of Music,10,Doctor Zhivago / The Sound of Music,10,True,True
+39,1967,A Man for All Seasons,8,Who's Afraid of Virginia Woolf?,13,False,False
+40,1968,In the Heat of the Night,7,Bonnie and Clyde / Guess Who's Coming to Dinner,10,True,False
+41,1969,Oliver!,11,Oliver!,11,False,True
+42,1970,Midnight Cowboy,7,Anne of the Thousand Days,10,False,False
+43,1971,Patton,10,Airport / Patton,10,True,True
+44,1972,The French Connection,8,Fiddler on the Roof / The French Connection / The Last Picture Show,8,True,True
+45,1973,The Godfather,11,The Godfather,11,False,True
+46,1974,The Sting,10,The Exorcist / The Sting,10,True,True
+47,1975,The Godfather Part II,11,Chinatown / The Godfather Part II,11,True,True
+48,1976,One Flew over the Cuckoo's Nest,9,One Flew over the Cuckoo's Nest,9,False,True
+49,1977,Rocky,10,Network / Rocky,10,True,True
+50,1978,Annie Hall,5,Julia / The Turning Point,11,True,False
+51,1979,The Deer Hunter,9,Heaven Can Wait / The Deer Hunter,9,True,True
+52,1980,Kramer vs. Kramer,9,All That Jazz / Kramer vs. Kramer,9,True,True
+53,1981,Ordinary People,6,Raging Bull / The Elephant Man,8,True,False
+54,1982,Chariots of Fire,7,Reds,12,False,False
+55,1983,Gandhi,11,Gandhi,11,False,True
+56,1984,Terms of Endearment,11,Terms of Endearment,11,False,True
+57,1985,Amadeus,11,A Passage to India / Amadeus,11,True,True
+58,1986,Out of Africa,11,Out of Africa / The Color Purple,11,True,True
+59,1987,Platoon,8,A Room with a View / Platoon,8,True,True
+60,1988,The Last Emperor,9,The Last Emperor,9,False,True
+61,1989,Rain Man,8,Rain Man,8,False,True
+62,1990,Driving Miss Daisy,9,Driving Miss Daisy,9,False,True
+63,1991,Dances With Wolves,12,Dances With Wolves,12,False,True
+64,1992,The Silence of the Lambs,7,Bugsy,10,False,False
+65,1993,Unforgiven,9,Howards End / Unforgiven,9,True,True
+66,1994,Schindler's List,12,Schindler's List,12,False,True
+67,1995,Forrest Gump,13,Forrest Gump,13,False,True
+68,1996,Braveheart,10,Braveheart,10,False,True
+69,1997,The English Patient,12,The English Patient,12,False,True
+70,1998,Titanic,14,Titanic,14,False,True
+71,1999,Shakespeare in Love,13,Shakespeare in Love,13,False,True
+72,2000,American Beauty,8,American Beauty,8,False,True
+73,2001,Gladiator,12,Gladiator,12,False,True
+74,2002,A Beautiful Mind,8,The Lord of the Rings: The Fellowship of the Ring,13,False,False
+75,2003,Chicago,13,Chicago,13,False,True
+76,2004,The Lord of the Rings: The Return of the King,11,The Lord of the Rings: The Return of the King,11,False,True
+77,2005,Million Dollar Baby,7,The Aviator,11,False,False
+78,2006,Crash,6,Brokeback Mountain,8,False,False
+79,2007,The Departed,5,Dreamgirls,8,False,False
+80,2008,No Country for Old Men,8,No Country for Old Men / There Will Be Blood,8,True,True
+81,2009,Slumdog Millionaire,10,The Curious Case of Benjamin Button,13,False,False
+82,2010,The Hurt Locker,9,Avatar / The Hurt Locker,9,True,True
+83,2011,The King's Speech,12,The King's Speech,12,False,True
+84,2012,The Artist,10,Hugo,11,False,False
+85,2013,Argo,7,Lincoln,12,False,False
+86,2014,12 Years a Slave,9,American Hustle / Gravity,10,True,False
+87,2015,Birdman or (The Unexpected Virtue of Ignorance),9,Birdman or (The Unexpected Virtue of Ignorance) / The Grand Budapest Hotel,9,True,True
+88,2016,Spotlight,6,The Revenant,12,False,False
+89,2017,Moonlight,8,La La Land,14,False,False
+90,2018,The Shape of Water,13,The Shape of Water,13,False,True
+91,2019,Green Book,5,Roma / The Favourite,10,True,False
+92,2020,Parasite,6,Joker,11,False,False
+93,2021,Nomadland,6,Mank,10,False,False
+94,2022,CODA,3,The Power of the Dog,12,False,False
+95,2023,Everything Everywhere All at Once,11,Everything Everywhere All at Once,11,False,True
+96,2024,Oppenheimer,13,Oppenheimer,13,False,True
+97,2025,Anora,6,Emilia Pérez,13,False,False
+98,2026,One Battle after Another,13,Sinners,16,False,False

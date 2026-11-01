@@ -41,14 +41,12 @@ jobs:
           uv --version
           quarto --version
           git rev-parse HEAD
-          sha256sum uv.lock _quarto.yml index.qmd
-      - name: Test and lint without acquisition or training
+      - name: Test and lint
         run: |
           uv run --locked python -m pytest
           uv run --locked ruff check .
           uv run --locked ruff format --check .
-      - name: Validate approved inputs and render without execution
+      - name: Render and check the site
         run: |
-          uv run --locked python scripts/validate_publication.py --check-inputs
-          quarto render index.qmd --no-execute
-          uv run --locked python scripts/validate_publication.py
+          quarto render
+          uv run --locked python scripts/check_site.py
