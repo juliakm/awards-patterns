@@ -34,6 +34,25 @@
     ],
     "permission_scope": "Acquisition/backup/publication columns concern source material for this project. audit_summaries_links_only is not permission to republish source datasets, charts, page text or media. Conservative project decisions are not legal advice."
   },
+  "post_audit_decisions": [
+    {
+      "date": "2026-11-01",
+      "decided_by": "project owner",
+      "primary_source": "kaggle_oscar",
+      "version": 13,
+      "decision": "Use Kaggle unanimad/the-oscar-award v13 as the primary Oscar source, relying on its CC0 label. Keep raw files private; publish only attributed summaries and small factual tables; do not redistribute the dataset.",
+      "not_established": "Upstream Academy terms are not recorded as reviewed. Actual columns and 2010-2026 coverage remain unverified until the files are inspected.",
+      "fallback": "No bulk fallback selected; the plan's hand-verified contest table remains the fallback."
+    },
+    {
+      "date": "2026-11-01",
+      "decided_by": "project owner supplied the API guide; cross-check run in session",
+      "source": "oscarbase",
+      "result": "The API now returns records, unlike the October 31 checks. In 8 winner-list requests plus the ceremonies list, Oscarbase matched Kaggle v13 on contests per ceremony for 2010-2026 and on all 246 distinct ceremony-year and film winner pairs. No API responses were retained.",
+      "limits": "Film-level comparison only, not recipient-level or within-category. Shared upstream is possible, so this does not replace Academy spot-checks. No reuse license was found.",
+      "decision": "Use only as a cross-check, not as a primary source or published data."
+    }
+  ],
   "evidence": [
     {
       "id": "E01",

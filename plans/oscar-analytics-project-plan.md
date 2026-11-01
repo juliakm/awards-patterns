@@ -1,6 +1,6 @@
 # Oscar analytics and winner prediction: execution plan
 
-Created October 31, 2026. Target public launch: January 14, 2027, with a one-week buffer before the January 21 nominations announcement.
+Created October 31, 2026; resequenced November 1, 2026. Target first data-backed article: November 22, 2026. Target full launch with model results: January 14, 2027, with a one-week buffer before the January 21 nominations announcement.
 
 ## 1. Project brief and decisions
 
@@ -17,10 +17,12 @@ Build an article-first website for film and data enthusiasts, backed by reproduc
 | Public technical evidence | Pipeline code, tests, data model, selected notebooks, methodology, evaluation results, and model documentation |
 | Prediction target | Winners among announced Oscar nominees, not nomination prediction |
 | Forecast products | Primary forecast immediately before final voting opens; early read at nominations + 24 hours |
-| Priority | A credible richer model takes precedence over publishing all three initial articles |
+| Priority | First, one published descriptive article from real Oscar data. After that, a credible richer model takes precedence over additional articles |
 | Capacity | Approximately 10 hours/week; free data preferred, paid APIs considered only if necessary |
 
 **Launch contract:** an all-category historical dataset, a working public site, one substantive article, reproducible chronological model evaluation at both forecast cutoffs, and an inference pipeline that can accept the 2027 nominees. Every category gets a coverage/status entry; not every category needs a defensible learned model.
+
+**Sequencing rule:** do not start precursor collection or model work until the first descriptive article is live. A published finding serves both project goals, portfolio evidence and Oscar insight, even if the model later slips or is cut.
 
 **Not required before launch:** three finished articles, a custom domain, live Python queries, visitor accounts, exhaustive precursor coverage, automated scraping of every prediction archive, or separately tuned models for every category.
 
@@ -28,15 +30,25 @@ Quarto is the publishing layer, not the main portfolio skill claim. It supports 
 
 ## 2. Release scope and editorial roadmap
 
-### First three stories
+### First article: descriptive Oscar patterns
+
+Publish by November 22 using Oscar records only, with no precursors, pundit data, or model. Pick the question or two with the clearest result:
+
+- How often does the most-nominated film win Best Picture?
+- How often do Best Picture and Best Director go to different films?
+- Do repeat acting and directing nominees eventually win, including Meryl Streep's nomination-to-win conversion?
+
+Use ceremonies 2010–2023 for any analysis of how nominations or history relate to winning. Normalization and coverage checks may include 2024–2026, but this article may not report those outcome patterns until the frozen test has run. Earlier records may be used for career history. Show denominators, category and rule changes, and that these are descriptive patterns rather than causes.
+
+### Later stories
 
 1. **Who predicts which categories well?** Compare individual pundits and consensus entries from Awards Daily, showing accuracy, denominators, shared-year comparisons, and uncertainty.
 2. **Which precursor awards actually help?** Compare category-specific precursor agreement and test whether those signals improve out-of-time predictions.
 3. **Does box office matter?** Explore revenue versus winning among nominees, clearly distinguishing descriptive lifetime revenue from information available before an Oscar forecast.
 
-Keep repeat-nominee questions, including Meryl Streep's nomination-to-win conversion, in the backlog. For career-history features, retain earlier Oscar records even though the main analytical window starts in 2010.
+For career-history features, retain earlier Oscar records even though the main analytical window starts in 2010.
 
-For January, publish whichever of stories 1–2 has the strongest verified data. Awards Daily accuracy may need to follow the precursor article if historical timestamps or reuse permissions are unresolved. A documented negative or inconclusive result is a valid finding; do not require a surprising pattern. Any article drafted before the frozen test run must exclude 2024–2026 from precursor-signal analysis.
+For the second article, due by January 3, publish whichever of stories 1–2 has the strongest verified data. Awards Daily accuracy may need to follow the precursor article if historical timestamps or reuse permissions are unresolved. A documented negative or inconclusive result is a valid finding; do not require a surprising pattern. Any article drafted before the frozen test run must exclude 2024–2026 from precursor-signal analysis.
 
 ### Public pages
 
@@ -58,7 +70,11 @@ Streamlit requires a Python server and separate hosting; it cannot run on GitHub
 
 ## 3. Source research and acquisition decisions
 
-The following reflects checks made October 31, 2026. A documentation page being reachable does not establish that an API works, a dataset is complete, or redistribution is permitted.
+The following reflects checks made October 31, 2026. A documentation page being reachable does not establish that an API works, a dataset is complete, or redistribution is permitted. For later findings, `data/source_registry.csv` and `data/source_audit.json` take precedence over this table.
+
+**Data stance, decided November 1:** keep raw data private, publish only attributed summaries and small factual tables, and do not redistribute source datasets. Exclude sources whose terms prohibit the needed collection, such as automated collection from the Golden Globes site. This is a project risk decision, not legal advice.
+
+**Primary Oscar source, decided November 1:** [Kaggle `unanimad/the-oscar-award`](https://www.kaggle.com/datasets/unanimad/the-oscar-award) version 13, relying on its CC0 label. The label comes from the uploader, and upstream Academy terms are not recorded as reviewed; the data stance above limits what gets published. Actual columns and coverage still need inspection. There is no bulk fallback, so the hand-verified table in section 8 remains the fallback.
 
 | Source | Findings and proposed use | Required next check |
 |---|---|---|
@@ -97,7 +113,7 @@ Avoid copying articles, images, biographies, or full third-party prediction char
 
 ## 4. Data model and quality rules
 
-Use immutable source snapshots where permitted, curated Parquet tables, and DuckDB SQL queries over those files. Keep one curated truth rather than maintaining unrelated CSV, notebook, and website versions. Record a checksum for every snapshot in `data/source_registry.csv` and back up permitted snapshots to private storage, because `data/raw/` and `data/curated/` are not committed and a source version can disappear.
+Use immutable source snapshots where permitted, curated Parquet tables, and DuckDB SQL queries over those files. Keep one curated truth rather than maintaining unrelated CSV, notebook, and website versions. Record a checksum for every snapshot file in `data/snapshot_manifest.csv` and back up permitted snapshots to private storage, because `data/raw/` and `data/curated/` are not committed and a source version can disappear.
 
 | Table | Grain and essential fields |
 |---|---|
@@ -191,6 +207,8 @@ Set `execute: freeze: auto` and commit `_freeze/`. Published pages read only fro
 
 Use DuckDB for joins, coverage checks, and analytical aggregations; use pandas for transformation and plotting. Add dependencies only when a concrete task needs them. Avoid a backend, cloud database, orchestration framework, and deep learning for this release.
 
+Express core normalization checks, coverage, and feature joins in DuckDB SQL so the project's main analytical work is readable. Treat `src/oscar_patterns/features.py` on the `update-project-plan` branch as a draft reference, and keep it off `main` until it is replaced or proven on real data. Reuse its behavior tests as acceptance criteria.
+
 ### Environment/bootstrap checklist
 
 The following commands are for the later implementation phase; this plan does not create or initialize the application.
@@ -251,7 +269,9 @@ Backtest both cutoffs before launch and use the same cutoff policies for histori
 
 Precursor timing changes across the historical window. In recent seasons, DGA, PGA, SAG, and BAFTA winners have generally been announced after Oscar nominations, while some were announced earlier in the first seasons of the window. Verify each date in the data. At the early-read cutoff, a precursor-win coefficient may therefore rest on a few older seasons; check this explicitly and do not present the early read as the model's strongest forecast.
 
-If accurate historical announcement timestamps cannot be established for a feature, exclude it from strict backtests or label the experiment retrospective and non-deployable. A final pundit chart cannot be used as a nomination-day feature simply because it is archived.
+Most guild results and historical schedule evidence are likely to be dated to a day, not an exact time. Replace policy 1.0.0's blanket date-only exclusion with a versioned date-level rule: a result with a verified date counts only if the end of that date, in the latest applicable timezone, is before the cutoff. Treat a date-only cutoff conservatively as the start of that day. Same-day ambiguity stays ineligible.
+
+If a feature's historical availability cannot be established even to a date, exclude it from strict backtests or label the experiment retrospective and non-deployable. A final pundit chart cannot be used as a nomination-day feature simply because it is archived.
 
 ### Candidate features
 
@@ -266,7 +286,7 @@ Start with features that can be reconstructed reliably:
 
 Revenue, budgets, critic scores, and popularity measures are optional. Current lifetime revenue, current review aggregates, TMDB popularity, retrospective biographies, and post-Oscar honors must not leak into historical forecasts. Static attributes that were known then still need verified definitions and coverage.
 
-For each precursor, distinguish **not nominated**, **event not yet held**, **category not applicable**, and **source missing**. Map DGA to directing, PGA to picture, and acting guild awards to their corresponding acting contests. Pool these through shared `nominated_mapped_precursor` and `won_mapped_precursor` features, with limited interactions by category family; separate award-by-category effects would each rest on about 17 contests. A precursor counts only for its mapped contest, so do not create a signal for winning any guild award.
+For each precursor, distinguish **not nominated**, **event not yet held**, **category not applicable**, and **source missing**. Map DGA to directing, PGA to picture, and acting guild awards to their corresponding acting contests. Pool these through shared `nominated_mapped_precursor` and `won_mapped_precursor` features, with limited interactions by category family; separate award-by-category effects would each rest on about 17 contests. A precursor counts only for its mapped contest, so do not create a signal for winning any guild award. Review acting nominees whom a guild placed in a different lead or supporting category, so that a category difference is not recorded as a true "not nominated."
 
 ### Models and evaluation
 
@@ -282,6 +302,7 @@ Suggested split:
 - Development: expanding-window one-season-ahead validation for 2017–2023.
 - Untouched final test: 2024–2026, predicted one season at a time using only earlier seasons; do not revise choices in response to these results.
 - After reporting the frozen test result, refit the selected approach on eligible 2010–2026 data for 2027 inference.
+- Optional development experiment: if permitted precursor data reaches back far enough, test extending training to about 1996 (roughly 700 contests). Decide before the freeze using development years only; article scope and test years do not change.
 
 All preprocessing, imputation, feature selection, tuning, and any calibration happen inside the appropriate training window. Keep every contest and ceremony together; never randomly split nominee rows. If adding calibration, use earlier-year out-of-fold predictions, not the final test or in-sample fitted scores.
 
@@ -331,24 +352,24 @@ The calendar provides roughly 11 working weeks before the January 14 target. Res
 
 | Window | Budget | Deliverable and completion gate |
 |---|---:|---|
-| Nov 2–8 | 10 h | Initialize package and public code repository; deploy a minimal Quarto page with basic checks through CI. Home page works at the public URL |
-| Nov 9–15 | 10 h | Complete source audit and pick primary/fallback sources. Acquire a pinned, checksummed Oscar snapshot; licensing blockers are explicit |
-| Nov 16–22 | 10 h | Normalize all-category 2010–2026 data, category rules, aliases, and bridges. Independent coverage checks and core data tests pass; complete the precursor go/no-go |
-| Nov 23–29 | 10 h | Thanksgiving week: collect DGA, PGA, and SAG nominees, winners, and result dates, and link them to Oscar entries |
-| Nov 30–Dec 6 | 10 h | Build dated feature snapshots at both cutoffs; implement uniform and rule baselines. Prove no future features in a historical dry run |
+| Nov 2–8 | 10 h | Acquire the pinned, checksummed Kaggle v13 snapshot, back it up privately, and inspect its actual columns and coverage |
+| Nov 9–15 | 10 h | Normalize all-category 2010–2026 Oscar data, category rules, aliases, and bridges. Independent coverage checks and core data tests pass; publication guard accepts approved articles and charts |
+| Nov 16–22 | 10 h | Publish the first descriptive article with at least one interactive chart and a notebook with saved outputs. Lead the README with the question, chart, finding, and methods |
+| Nov 23–29 | 10 h | Thanksgiving week: complete the precursor go/no-go; collect DGA, PGA, and SAG nominees, winners, and result dates, and link them to Oscar entries |
+| Nov 30–Dec 6 | 10 h | Version the date-level eligibility rule; rebuild core features in DuckDB SQL; enforce the test-year quarantine in code; build snapshots at both cutoffs and uniform and rule baselines. Prove no future features in a historical dry run |
 | Dec 7–13 | 10 h | Run pooled regularized model and conditional logit challenger with chronological folds; produce initial evaluation notebook and coverage report. Audit Awards Daily sample further only if acquisition is on track |
 | Dec 14–20 | 10 h | Run feature ablations and complete development comparisons; pass the development-season dry run; freeze feature/model/metric decisions |
 | Dec 21–27 | 10 h | Run untouched test at both cutoffs, write model card, and refit deployment model. Use holiday slack explicitly if actual capacity drops |
-| Dec 28–Jan 3 | 10 h | Draft and publish one article from validated findings, with methods, selected notebook, and historical prediction results |
+| Dec 28–Jan 3 | 10 h | Draft and publish the second article from validated model findings, with methods, selected notebook, and historical prediction results |
 | Jan 4–10 | 10 h | End-to-end historical season rehearsal, publication audit, mobile/chart checks, and inference/runbook fixes |
 | Jan 11–14 | 10 h | Release freeze and launch. Collect 2027 precursor data known so far; confirm nominee import workflow and source-monitoring checklist |
 | Jan 15–20 | Buffer | Repair only; verify Academy schedule, including final voting dates, and incoming nomination-day sources |
 
 ### Scope-cut checkpoints
 
-- **Nov 15:** if the primary source is blocked, use a permitted historical fallback plus curated recent records; disclose incompleteness rather than claiming full coverage.
-- **Nov 22:** go/no-go on precursor access and collection rate before modeling depends on the data. Launch precursors are DGA, PGA, and SAG; Globes and BAFTA wait until after launch unless work is ahead of schedule. If those three cannot be collected with dates in the available time, reduce to the sources that can and disclose the narrower coverage.
-- **Nov 29:** if timestamped pundit or box-office data is unavailable, remove it from the launch model. Continue with stable metadata, career history, and dated precursors.
+- **Nov 8:** if the data stance rules out every bulk Oscar source, build a small hand-verified table of Picture, Director, and acting contests for 2010–2023 from factual references (about 84 contests). Narrow the first article to those categories and disclose the limit. Full-category coverage and the model then wait for a cleared source.
+- **Nov 22:** if the first article is not ready, cut it to one question and one chart and publish it before starting precursor work.
+- **Nov 29:** go/no-go on precursor access and collection rate before modeling depends on the data. Launch precursors are DGA, PGA, and SAG; Globes and BAFTA wait until after launch unless work is ahead of schedule. If those three cannot be collected with dates in the available time, reduce to the sources that can and disclose the narrower coverage. If timestamped pundit or box-office data is unavailable, remove it from the launch model. Continue with stable metadata, career history, and dated precursors.
 - **Dec 13:** if the challenger or precursor work is consuming the schedule, stop expanding models, award sources, and articles. Finish evaluation on the verified feature set.
 - **Jan 3:** freeze features. Cut additional stories, advanced filters, and custom branding before cutting temporal validation, source disclosure, or deployment rehearsal.
 
@@ -375,6 +396,7 @@ Configure Pages to use GitHub Actions. Have the workflow:
 
 Keep acquisition/training separate from deployment. Do not automatically retrain a model on each push. Execute notebooks locally and publish approved saved outputs; CI does not need ignored data or a live API. Record the data/artifact version so cached results do not silently become stale.
 
+- [ ] Before the first article, replace the homepage-only guard's exact file list, inline-script ban, and homepage-only search and sitemap rules with article-aware checks. Keep the "oscar" path, secret, symlink, and restricted file-type checks.
 - [ ] Store API keys in local environment variables or GitHub secrets, never notebook cells or commits.
 - [ ] Ensure copied resources, HTML, notebook downloads, logs, and Plotly payloads contain only material intended for public release.
 - [ ] Omit raw source data, model binaries, environment files, and unselected notebooks from the site artifact.
@@ -425,17 +447,17 @@ Decide during execution, not before starting: final project title, exact dataset
 
 ## 13. Executable todo backlog
 
-This is the repository copy of the 24 implementation todos created in the session task database. All started as **pending** on October 31, 2026; the checkboxes below record verified completion. The three completed fleet-decomposition tasks are planning work, not completed implementation, and are omitted here.
+The checkboxes below record verified completion. Dependencies are actual prerequisites, not ordering implied by this list. Independent tasks can run in parallel; coordinate shared files such as README, package configuration, and workflows.
 
-Each ID matches its session todo. Check off tasks here and update their session status as work completes. Dependencies are actual prerequisites, not ordering implied by this list. Independent tasks can run in parallel; coordinate shared files such as README, package configuration, and workflows.
-
-**Initially ready to start independently:** `foundation-bootstrap`, `data-source-audit`, `model-cutoff-policy`, `repo-auditing-public-history`, and `site-minimal-root-quarto`.
+**Next up:** `data-pinned-acquisition`. Precursor and model tasks wait for `analysis-descriptive-first` under the sequencing rule in section 1.
 
 Repository renaming, public visibility, and Pages setup were authorized subject to the public-history audit. The repository is now public at `juliakm/awards-patterns`; the first milestone is complete and the HTTPS homepage is verified at `https://juliakm.com/awards-patterns/`.
 
 **Execution checkpoint, October 31:** Python 3.12.16, uv 0.13.6, and Quarto 1.10.20 are installed and tested locally. The initial Python suite passes 16 tests; the minimal homepage renders. The source audit is complete but has not cleared a primary/fallback bulk-data permission path. Acquisition and the independently verified category registry are blocked on source permissions/access; no actual Oscar dataset, fitted model, or empirical results are claimed. See `data/source_audit.json` for evidence and next steps. Code/site infrastructure can proceed without publishing source records.
 
-**First milestone verified, November 1:** both GitHub checks and Pages deployment succeeded with 53 committed tests. The public homepage, GitHub-address redirect, CSS, JavaScript, and approved artifact paths were verified over HTTPS. The audit covers 25 candidate sources with 24 linked evidence records; its notebook executes offline. The first CI attempt exposed a platform-specific Cosmo stylesheet fingerprint, now fixed with explicit reviewed macOS/Linux variants and regression tests. See `artifacts/public-release-audit.json` for run links and proof. No model training or future-season work was performed. Uncommitted feature drafts from a cancelled agent are preserved locally, not published, and their todo remains pending.
+**First milestone verified, November 1:** both GitHub checks and Pages deployment succeeded with 53 committed tests. The public homepage, GitHub-address redirect, CSS, JavaScript, and approved artifact paths were verified over HTTPS. The audit covers 25 candidate sources with 24 linked evidence records; its notebook executes offline. The first CI attempt exposed a platform-specific Cosmo stylesheet fingerprint, now fixed with explicit reviewed macOS/Linux variants and regression tests. See `artifacts/public-release-audit.json` for run links and proof. No model training or future-season work was performed. Draft feature code and tests are now committed on the `update-project-plan` branch, not on `main`, and their todo remains pending.
+
+**Snapshot checkpoint, November 1:** Kaggle v13 is downloaded to `data/raw/kaggle-the-oscar-award-v13/`, with checksums in `data/snapshot_manifest.csv`. Use `full_data.csv`, which is tab-separated and has one row per ballot entry plus IMDb IDs; `the_oscar_award.csv` splits entries by film and has shifted columns in five 1957 rows. Excluding the Special and SciTech classes gives the expected 403 contests for 2010–2026. Normalization must override the file's canonical category for the 2021–2026 merged Sound award, which is filed under `SOUND MIXING`, and support two documented ties: 2013 Sound Editing and 2026 Live Action Short. Oscarbase now responds and matched Kaggle on contests per ceremony and all 246 distinct 2010–2026 ceremony-year and film winner pairs. It is a cross-check only: the comparison is film-level, it may share an upstream source, and no reuse license was found. Academy spot-checks, private backup, and reusable ingestion remain open.
 
 ### Python foundation and data
 
@@ -451,17 +473,23 @@ Repository renaming, public visibility, and Pages setup were authorized subject 
 
   **Acceptance:** select a permitted primary/fallback Oscar source or explicitly record gaps/blockers; do not present old plan observations as new research. Optional pundit/revenue/other-award sources do not block the core pipeline. **Depends on:** none.
 
+- [x] **`data-source-stance` — Recording the data stance and choosing Oscar sources**
+
+  Read the Academy, Kaggle, and DLu terms directly; recheck audit gaps that came from inaccessible pages; and record the project's risk decision, primary source, and fallback in the registry. If no bulk source is acceptable, use the hand-verified fallback in section 8.
+
+  **Acceptance:** one usable Oscar source path and its publication limits are recorded by November 8, with no gap presented as a publisher refusal unless the publisher actually refused. **Depends on:** `data-source-audit`.
+
 - [ ] **`data-category-rule-registry` — Defining independent ceremony and category rules**
 
   Create independently verified ceremony/category/rule registries for competitive 2010–2026 contests, including eligibility windows, nomination and final-voting dates or explicit unknowns, original labels, category transitions, field-size rules, and documented ties. Suggested outputs are `data/reference/` tables and `notebooks/01_category_history.ipynb`, subject to publication permissions.
 
-  **Acceptance:** unique expected contests and provenance; checked 2010/2011/2021/2026 examples; correct Sound, Best Picture, Casting, and exceptional-window handling without guessed dates. **Depends on:** `data-source-audit`.
+  **Acceptance:** unique expected contests and provenance; checked 2010/2011/2021/2026 examples; correct Sound, Best Picture, Casting, and exceptional-window handling without guessed dates. **Depends on:** `data-source-stance`.
 
 - [ ] **`data-pinned-acquisition` — Acquiring permitted immutable Oscar snapshots**
 
   Implement reusable ingestion and `oscar-data ingest --source oscar-csv`. Store permitted immutable snapshots privately, record source/version/retrieval time/SHA-256 in the registry, and document permission-compatible backup and restore. Retain earlier acting/directing records when available for career history.
 
-  **Acceptance:** checksummed restores reproduce inputs; snapshots cannot be silently overwritten; unavailable/unlicensed inputs fail clearly; actual 2010–2026 completeness is inspected and gaps disclosed. No restricted data or credentials are staged. **Depends on:** `data-source-audit`, `foundation-bootstrap`.
+  **Acceptance:** checksummed restores reproduce inputs; snapshots cannot be silently overwritten; unavailable/unlicensed inputs fail clearly; actual 2010–2026 completeness is inspected and gaps disclosed. No restricted data or credentials are staged. **Depends on:** `data-source-stance`, `foundation-bootstrap`.
 
 - [ ] **`data-normalized-ballots` — Normalizing ballot entities and reviewed identity crosswalks**
 
@@ -485,9 +513,15 @@ Repository renaming, public visibility, and Pages setup were authorized subject 
 
   Define the approved `data/public/` schema/manifest and implement `oscar-data export-public` for only permitted fields and aggregates needed by articles/notebooks/site pages. Record source terms, attribution, versions, input checksums, generation time, and coverage limits. Keep public output paths free of case-insensitive "oscar".
 
-  **Acceptance:** allowlist, schema, provenance, and path tests pass; invalid/unapproved inputs fail rather than appear fresh; committed publication inputs work without private data or APIs. Optional fields require separate approval and do not block core exports. **Depends on:** `data-coverage-validation`, `data-source-audit`.
+  **Acceptance:** allowlist, schema, provenance, and path tests pass; invalid/unapproved inputs fail rather than appear fresh; committed publication inputs work without private data or APIs. Optional fields require separate approval and do not block core exports. **Depends on:** `data-coverage-validation`, `data-source-stance`.
 
 ### Forecast research and analysis
+
+- [ ] **`analysis-descriptive-first` — Publishing the first descriptive article**
+
+  Write one article and selected notebook with saved outputs from Oscar records, answering one or two questions from section 2 with SQL-backed tables and at least one interactive chart. Use only 2010–2023 for outcome patterns, plus earlier records for career history where needed. Lead the README and homepage with the result.
+
+  **Acceptance:** live at the public URL by November 22, with auditable denominators, coverage, caveats, and permitted public inputs; no 2024–2026 outcome patterns are reported. **Depends on:** `data-coverage-validation`, `data-approved-public-contract`, `release-article-publication-guard`.
 
 - [x] **`model-cutoff-policy` — Defining dual-cutoff forecast and evaluation policy**
 
@@ -497,9 +531,9 @@ Repository renaming, public visibility, and Pages setup were authorized subject 
 
 - [ ] **`model-dated-features` — Building leakage-safe feature snapshots**
 
-  Implement both-cutoff feature construction for contest rules, distinct same-film nomination counts, pre-cutoff actor/director history, and feasible mapped precursor signals. Distinguish absent/not-yet-held/not-applicable/missing sources; exclude current revenue/review/popularity and post-award information from historical forecasts.
+  Implement both-cutoff feature construction in DuckDB SQL over real curated tables for contest rules, distinct same-film nomination counts, pre-cutoff actor/director history, and feasible mapped precursor signals. Publish a new policy version with the date-level eligibility rule, load the policy from one source of truth, and make feature and training code enforce `ceremony_partition` so test years cannot enter early. Distinguish absent/not-yet-held/not-applicable/missing sources; exclude current revenue/review/popularity and post-award information from historical forecasts.
 
-  **Acceptance:** cutoff, count, history, and missing-state tests pass; feature coverage and early-read precursor sparsity are reported. Fixture-based implementation can proceed before acquisition; real-source validation gates development evaluation. **Depends on:** `foundation-bootstrap`, `model-cutoff-policy`.
+  **Acceptance:** cutoff, date-level, count, history, quarantine, and missing-state tests pass; a dated guild result can enter a strict forecast; feature coverage and early-read precursor sparsity are reported on real data. The draft `features.py` tests serve as a reference, not a substitute for this run. **Depends on:** `foundation-bootstrap`, `model-cutoff-policy`, `data-coverage-validation`.
 
 - [ ] **`model-baseline-inference` — Implementing transparent baselines and shared inference contracts**
 
@@ -531,9 +565,9 @@ Repository renaming, public visibility, and Pages setup were authorized subject 
 
   **Acceptance:** reproducible historical artifacts and inference checks pass; selected approach is refit on eligible 2010–2026 data only after test reporting; model card explains both cutoffs, coverage, normalization, and sparse categories. **Depends on:** `model-preregister-selection`.
 
-- [ ] **`analysis-verified-flagship` — Writing the verified flagship analysis and bounded follow-up stories**
+- [ ] **`analysis-verified-flagship` — Writing the model-backed second article and bounded follow-up stories**
 
-  After final-test completion, write one article and selected reproducible notebook from verified findings with an explicit question, auditable denominators, interactive-chart inputs, matched comparisons, coverage, uncertainty, and noncausal caveats. Negative/inconclusive results are valid.
+  After final-test completion, write the second article and selected reproducible notebook from verified findings with an explicit question, auditable denominators, interactive-chart inputs, matched comparisons, coverage, uncertainty, and noncausal caveats. Negative/inconclusive results are valid.
 
   **Acceptance:** claims trace to permitted inputs and frozen evaluation; content is ready for site integration. Optional later pundit and box-office stories follow section 7 and do not gate completion of this task or launch. **Depends on:** `model-final-test-refit`.
 
@@ -569,11 +603,17 @@ Repository renaming, public visibility, and Pages setup were authorized subject 
 
   **Acceptance:** public Home and static navigation work with no Python server, private inputs, or unintended exposure; the early proof does not wait for full articles/models. **Depends on:** `release-offline-pages-workflows`, `repo-renaming-public-licensing`, `site-minimal-root-quarto`.
 
+- [ ] **`release-article-publication-guard` — Making the publication guard article-ready**
+
+  Replace the homepage-only exact file list, inline-script ban, and homepage-only search and sitemap rules so approved articles, Plotly assets, and notebooks can publish. Keep checks for "oscar" paths, secrets, symlinks, and restricted file types.
+
+  **Acceptance:** an approved sample article and chart pass on macOS and Linux; a forbidden path, secret, or raw data file still fails. **Depends on:** `release-offline-pages-workflows`.
+
 - [ ] **`site-integrating-public-navigation` — Integrating accessible pages charts and notebooks**
 
   Integrate Home/About/Methods/Predictions, the approved flagship article, Plotly charts, model/data documentation, and selected notebook/code links. Show coverage, source terms, update timestamps, both forecast policies, limitations, and required attributions.
 
-  **Acceptance:** navigation and charts work under `/awards-patterns/` without Python services; mobile/keyboard checks and public-path rules pass; no real 2027 forecast appears before verified nominees. **Depends on:** `analysis-verified-flagship`, `data-approved-public-contract`, `model-final-test-refit`, `site-minimal-root-quarto`.
+  **Acceptance:** navigation and charts work under `/awards-patterns/` without Python services; mobile/keyboard checks and public-path rules pass; no real 2027 forecast appears before verified nominees. **Depends on:** `analysis-descriptive-first`, `analysis-verified-flagship`, `data-approved-public-contract`, `model-final-test-refit`, `site-minimal-root-quarto`.
 
 - [ ] **`release-rehearsing-launch` — Rehearsing historical inference and freezing launch**
 
