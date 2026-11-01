@@ -1,6 +1,6 @@
 # Experiments
 
-One question per page: the guess, one chart, the answer, and a short "how we counted."
+One question per page: the guess, one chart, the answer, and a short "how I counted."
 
 ## Published
 

@@ -32,7 +32,7 @@ data to preview it or run the tests.
    into `data/raw/kaggle-the-oscar-award-v13/`, then run
    `uv run python scripts/build_tables.py`.
 3. Copy `experiments/most-nominated.qmd` and rewrite it. Each page has a guess, an
-   answer, one chart, and a note on how we counted.
+   answer, one chart, and a note on how I counted.
 4. Link it from `index.qmd`.
 
 ## Checks
