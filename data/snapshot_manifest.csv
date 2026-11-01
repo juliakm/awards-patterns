@@ -1,0 +1,4 @@
+source_id,version,file,bytes,sha256,retrieved_at,use
+kaggle_oscar,13,archive.zip,760673,d4db92beff76d7462c666726732333d74d149516ea0f4dcfbf3203c35b2f4e8b,2026-11-01T18:24:13Z,original_download
+kaggle_oscar,13,full_data.csv,2247354,3b1d39eedad7303468b83323f51bd1069289a2710ff9873efc4b4298ae1bba78,2026-11-01T18:24:13Z,primary_table
+kaggle_oscar,13,the_oscar_award.csv,1160294,9840283c504061c494ded638395e228d163ef76fa4b56b2d8b0f074ffd16eaba,2026-11-01T18:24:13Z,not_used_one_row_per_film_no_ids
